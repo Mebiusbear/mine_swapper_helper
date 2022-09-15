@@ -1,3 +1,7 @@
+## zero part
+```
+unzip pic.zip
+```
 
 ## first part
 + 制作数据集

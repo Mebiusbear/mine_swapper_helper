@@ -4,9 +4,10 @@ import torch
 from torchvision import transforms
 import os
 import shutil
+import setting_file
 
 loader = transforms.Compose([transforms.ToTensor()])
-label_name = ["num_1","num_2","num_3","num_4","num_5","lei","kong","zha","qizi"]
+label_name = setting_file.label_name
 len_label_name = len(label_name)
 
 def get_pre_name(pre):
@@ -26,8 +27,8 @@ def test(model,pic_abspath):
 
 
 def unclass_test(model):
-    unclass_dir = "pic/unclass"
-    testclass_dir = "pic/test_class"
+    unclass_dir = "pic/expand_dataset/unclass"
+    testclass_dir = "pic/expand_dataset/test_class"
     unclass_list = os.listdir(unclass_dir)
     for name in unclass_list:
         pre_name = test(model,os.path.join(unclass_dir,name))
@@ -51,7 +52,7 @@ class Batch_Net(nn.Module):
 def discri():
     criterion = nn.BCEWithLogitsLoss()
     model = Batch_Net(in_dim=30*30,n_hiddle_1=300,n_hiddle_2=100,out_dim=len_label_name)
-    model.load_state_dict(torch.load("/Users/bear/Documents/GitHub/saolei/model_param/h1_300_h2_100_e_80.pkl"))
+    model.load_state_dict(torch.load("model_param/h1_300_h2_100_e_80.pkl"))
     unclass_test(model)
 
 if __name__ == "__main__":

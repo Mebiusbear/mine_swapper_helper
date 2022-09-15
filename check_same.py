@@ -2,7 +2,6 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def check_same(file_dir):
     file_list = os.listdir(file_dir)
 
@@ -21,4 +20,4 @@ label_name = ["num_1","num_2","num_3","num_4","num_5","lei","kong","zha","qizi"]
 
 for ln in label_name:
     print (ln,end = " : ")
-    check_same(os.path.join("pic",ln))
+    check_same(os.path.join("pic/dataset",ln))

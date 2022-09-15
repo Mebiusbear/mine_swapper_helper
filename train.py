@@ -8,7 +8,7 @@ import numpy as np
 from torch import optim, nn
 from torch.autograd import Variable
 import shutil
-
+import setting_file
 import __init__
 
 def label_index(index,len_label_name):
@@ -16,19 +16,11 @@ def label_index(index,len_label_name):
     z[index] = 1
     return z
 
-def get_pre_name(pre):
-    pre = pre.detach().numpy().tolist()[0]
-    max1 = max(pre)
-    pre_index = pre.index(max1)
-    pre_name = label_name[pre_index]
-    return pre_name
-
-
 
 loader = transforms.Compose([transforms.ToTensor()])
 
 
-label_name = ["num_1","num_2","num_3","num_4","num_5","lei","kong","zha","qizi"]
+label_name = setting_file.label_name
 len_label_name = len(label_name)
 label_dict = {
     label_name[i] : label_index(i,len_label_name) for i in range (len_label_name)
@@ -60,7 +52,7 @@ class Mydata(Dataset):                  # 根据官方文档，自己创建的�
 
 
 
-root_dir = "./pic"
+root_dir = "./pic/dataset"
 train_dataset = Mydata(root_dir,label_name[0])
 for ln in label_name[1:]:
     train_dataset += Mydata(root_dir,ln)
@@ -85,7 +77,6 @@ def train():
     criterion = nn.BCEWithLogitsLoss()
     model = Batch_Net(in_dim=30*30,n_hiddle_1=300,n_hiddle_2=100,out_dim=len_label_name)
     opitimizer = optim.SGD(model.parameters(), lr=learning_rate)
-
 
     for i in range(epoch):
         for img, label in train_dataset:

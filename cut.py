@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import PIL
 
-im = plt.imread("test_4.png")
+im = plt.imread("./pic/expand_dataset/test_4.png")
 im = im[143:623,15:915,:]
 
 SIZE = 30
@@ -21,4 +21,4 @@ for i in range (16):
             res.append(all_1[i,:,j,:,:])
 
 for i,little_im in enumerate(res):
-    plt.imsave("pic/unclass/%d.png"%i,little_im)
+    plt.imsave("pic/expand_dataset/unclass/%d.png"%i,little_im)
