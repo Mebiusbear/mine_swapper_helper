@@ -15,3 +15,11 @@ python cut.py
 
 ## third part
 + 数独
+
+# TODO
++ 写dataset教程
++ 写cut-discrame-workflow
++ 换一个CNN
++ 优化log_file
++ 写dataset，test文件
++ loss作图,matplotlib

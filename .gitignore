@@ -1,4 +1,6 @@
-pic
+pic/
+temp/
+log_file/
 .DS_Store
 __pycache__
 example.ipynb
