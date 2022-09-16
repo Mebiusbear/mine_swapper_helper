@@ -48,7 +48,9 @@ def unclass_test(model):
     unclass_dir = "pic/expand_dataset/unclass"
     testclass_dir = "pic/expand_dataset/test_class"
     unclass_list = os.listdir(unclass_dir)
-    os.system("rm -r pic/expand_dataset/test_class/*")
+    if os.listdir(testclass_dir):
+        print ("rm -r %s/*"%testclass_dir)
+        os.system("rm -r %s/*"%testclass_dir)
     for name in unclass_list:
         pre_name = test(model,os.path.join(unclass_dir,name))
         out_dir = os.path.join(testclass_dir,pre_name)
@@ -91,6 +93,6 @@ def get_all_pixel_discri(file_dir):
 
 
 if __name__ == "__main__":
-    # discri(unclass_test)
+    discri(unclass_test)
     pass
     # get_all_pixel_discri("temp")

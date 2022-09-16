@@ -1,8 +1,8 @@
 pic_old.zip
+__MACOSX
 pic/
 temp/
 log_file/
 .DS_Store
 __pycache__
 example.ipynb
-__MACOSX

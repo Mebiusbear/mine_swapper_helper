@@ -51,11 +51,11 @@ class Batch_Net(nn.Module):
 
 # 训练部分
 in_dim= INIT_SIZE*INIT_SIZE
-n_hiddle_1=200
-n_hiddle_2=50
-n_hiddle_3=25
+n_hiddle_1=1600
+n_hiddle_2=400
+n_hiddle_3=100
 
-epoch = 20
+epoch = 10
 learning_rate = 1e-3
 batch_size = 8
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)
