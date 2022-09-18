@@ -35,6 +35,6 @@ def class_unclass(res):
         plt.imsave("pic/expand_dataset/unclass/%d.png"%i,little_im)
 
 if __name__ == "__main__":
-    res = cut("./pic/expand_dataset/used_pic/Wechat_6.png")
+    res = cut("./pic/expand_dataset/used_pic/Wechat_2.png")
     # save(res)
     class_unclass(res)

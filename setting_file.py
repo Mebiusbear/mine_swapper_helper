@@ -55,7 +55,7 @@ n_hiddle_1=1600
 n_hiddle_2=400
 n_hiddle_3=100
 
-epoch = 10
+epoch = 100
 learning_rate = 1e-3
 batch_size = 8
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)

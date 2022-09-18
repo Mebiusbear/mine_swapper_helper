@@ -1,6 +1,7 @@
 ## zero part
 ```
 unzip pic.zip
+mkdir log_file
 ```
 
 ## first part
@@ -15,8 +16,12 @@ python cut.py
 
 ## third part
 + 数独
++ 创建简单数独数学模型
++ 破解数独
++ pyqt制作游戏
 
 # TODO
++ 多通道线性层
 + 写dataset教程
 + 写cut-discrame-workflow
 + 换一个CNN
