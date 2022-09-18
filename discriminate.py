@@ -36,7 +36,7 @@ def get_pre_name(pre):
     return pre_name
 
 def test(model,pic_abspath):
-    img = Image.open(pic_abspath).convert("L")
+    img = Image.open(pic_abspath)
     img = loader(img)
     img = img.view(1, -1)
     model.eval()

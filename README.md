@@ -2,6 +2,7 @@
 ```
 unzip pic.zip
 mkdir log_file
+mkdir model_param
 ```
 
 ## first part
@@ -21,7 +22,8 @@ python cut.py
 + pyqt制作游戏
 
 # TODO
-+ 多通道线性层
++ ~~多通道线性层 (finish)~~
++ 1与4的区分测试
 + 写dataset教程
 + 写cut-discrame-workflow
 + 换一个CNN

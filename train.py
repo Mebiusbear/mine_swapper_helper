@@ -28,6 +28,8 @@ epoch = setting_file.epoch
 learning_rate = setting_file.learning_rate
 model_name = setting_file.model_name
 
+# 日志部分
+make_log = setting_file.make_log
 
 class Mydata(Dataset):                  # 根据官方文档，自己创建的类必须继承Dataset
     def __init__(self,root_dir,label_dir):          # 初始化操作,传入图片所在的根目录路径（root_dir）和label的路径（label_dir）获得一个路径列表（img_path）
@@ -40,7 +42,7 @@ class Mydata(Dataset):                  # 根据官方文档，自己创建的�
     def __getitem__(self,idx):                                # 使用index(简写为idx)获取某个数据
         # img_name = self.img_path[idx]                           # img_path列表里每个元素就是对应图片文件名
         # img_item_path = os.path.join(self.root_dir,self.label_dir,img_name)	# 获得对应图片路径
-        img = Image.open(self.imgs[idx]).convert("L")                                   # 使用PIL库下Image工具，打开对应路径图片
+        img = Image.open(self.imgs[idx])                                 # 使用PIL库下Image工具，打开对应路径图片
         img = loader(img)
         label = self.label_dir                                              # 本数据集label就是文件名，如“ants”（虽然命名为dir看似路径，实则视作字符串会更容易理解）
         label = label_dict[label]
@@ -59,28 +61,12 @@ train_dataset = DataLoader(dataset=train_dataset, batch_size=batch_size,num_work
 train_dataset = list(train_dataset)
 
 
-def make_log():
-    # 第一步，创建一个logger
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)  # Log等级总开关  此时是INFO
-    # 第二步，创建一个handler，用于写入日志文件
-    logfile = 'log_file/log%d.txt'%epoch
-    fh = logging.FileHandler(logfile, mode='w')  # open的打开模式这里可以进行参考
-    fh.setLevel(logging.DEBUG)  # 输出到file的log等级的开关
-    # 第三步，再创建一个handler，用于输出到控制台
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.INFO)   # 输出到console的log等级的开关
-    # 第四步，定义handler的输出格式（时间，文件，行数，错误级别，错误提示）
-    formatter = logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s")
-    fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
-    # 第五步，将logger添加到handler里面
-    logger.addHandler(fh)
-    logger.addHandler(ch)
+
 
 
 def train():
     make_log()
+    logging.info("h1_%d_h2_%d_h3_%d_e_%d"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch))
     criterion = nn.CrossEntropyLoss()
     model = Batch_Net(in_dim,n_hiddle_1,n_hiddle_2,n_hiddle_3,out_dim=len_label_name)
     opitimizer = optim.SGD(model.parameters(), lr=learning_rate)

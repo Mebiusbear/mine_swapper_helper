@@ -1,7 +1,26 @@
 import torch.nn as nn
 from torchvision import transforms
 import torch
+import logging
 
+def make_log():
+    # 第一步，创建一个logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)  # Log等级总开关  此时是INFO
+    # 第二步，创建一个handler，用于写入日志文件
+    logfile = 'log_file/log%d.txt'%epoch
+    fh = logging.FileHandler(logfile, mode='w')  # open的打开模式这里可以进行参考
+    fh.setLevel(logging.DEBUG)  # 输出到file的log等级的开关
+    # 第三步，再创建一个handler，用于输出到控制台
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)   # 输出到console的log等级的开关
+    # 第四步，定义handler的输出格式（时间，文件，行数，错误级别，错误提示）
+    formatter = logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s")
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # 第五步，将logger添加到handler里面
+    logger.addHandler(fh)
+    logger.addHandler(ch)
 
 def label_index(index,len_label_name):
     z = torch.zeros(len_label_name)
@@ -28,8 +47,13 @@ label_dict = {
 }
 loader = transforms.Compose([transforms.CenterCrop(INIT_SIZE),
                                 transforms.ToTensor()])
-def loader_func(img):
+def loader_func_1(img):
+    img = img.convert("L")
     return loader(img).unsqueeze(0).reshape(1,INIT_SIZE,INIT_SIZE)
+def loader_func_2(img):
+    img = img.convert("RGB")
+    return loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
+
 
 # 模型部分
 class Batch_Net(nn.Module):
@@ -50,12 +74,20 @@ class Batch_Net(nn.Module):
 
 
 # 训练部分
-in_dim= INIT_SIZE*INIT_SIZE
-n_hiddle_1=1600
-n_hiddle_2=400
-n_hiddle_3=100
+loader_func = loader_func_2
 
-epoch = 100
+
+if loader_func == loader_func_1:
+    in_dim = INIT_SIZE*INIT_SIZE
+elif loader_func == loader_func_2:
+    in_dim = 3*INIT_SIZE*INIT_SIZE
+    
+    
+n_hiddle_1=1600
+n_hiddle_2=800
+n_hiddle_3=200
+
+epoch = 20
 learning_rate = 1e-3
-batch_size = 8
+batch_size = 4
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)
