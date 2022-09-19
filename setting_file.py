@@ -1,8 +1,14 @@
+from fileinput import filename
 import torch.nn as nn
 from torchvision import transforms
 import torch
 import logging
 
+INIT_SIZE = 24
+EASY_POINTS = (9,9)
+DIFFICULT_POINTS = (16,30)
+
+# 日志部分
 def make_log():
     # 第一步，创建一个logger
     logger = logging.getLogger()
@@ -28,7 +34,6 @@ def label_index(index,len_label_name):
     return index
 
 
-INIT_SIZE = 24
 
 # 数据准备部分
 label_name_dict = {
@@ -45,15 +50,17 @@ len_label_name = len(label_name)
 label_dict = {
     label_name[i] : label_index(i,len_label_name) for i in range (len_label_name)
 }
-loader = transforms.Compose([transforms.CenterCrop(INIT_SIZE),
+train_loader = transforms.Compose([transforms.RandomCrop(INIT_SIZE),transforms.Resize(INIT_SIZE),
                                 transforms.ToTensor()])
-def loader_func_1(img):
-    img = img.convert("L")
-    return loader(img).unsqueeze(0).reshape(1,INIT_SIZE,INIT_SIZE)
-def loader_func_2(img):
+dis_loader = transforms.Compose([transforms.CenterCrop(INIT_SIZE),
+                                transforms.ToTensor()])
+def train_loader_func(img):
     img = img.convert("RGB")
-    return loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
+    return train_loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
 
+def dis_loader_func(img):
+    img = img.convert("RGB")
+    return dis_loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
 
 # 模型部分
 class Batch_Net(nn.Module):
@@ -71,23 +78,48 @@ class Batch_Net(nn.Module):
         x = self.layer4(x)
         x = self.sofmax(x)
         return x
+def initial():
+    criterion = nn.BCEWithLogitsLoss()
+    model = Batch_Net(in_dim,n_hiddle_1,n_hiddle_2,n_hiddle_3,out_dim=len_label_name)
+    model.load_state_dict(torch.load(model_name))
+    return criterion, model
 
+# 识别部分
+def get_pre_name(pre):
+    pre_index = torch.max(pre.data,1)[1][0]
+    pre_name = label_name[pre_index]
+    return pre_name
 
-# 训练部分
-loader_func = loader_func_2
+def get_all_pixel_discri_kernel(level,filename=None,model_eval=None):
+    import cut
+    if level == "difficult":
+        ROW,COL = DIFFICULT_POINTS
+        cut_func = cut.difficult_cut
+    elif level == "easy":
+        ROW,COL = EASY_POINTS
+        cut_func = cut.easy_cut
+    def func(model_eval,filename):
+        res = cut_func(filename)
+        ans = cut.topil(res)
 
-
-if loader_func == loader_func_1:
-    in_dim = INIT_SIZE*INIT_SIZE
-elif loader_func == loader_func_2:
-    in_dim = 3*INIT_SIZE*INIT_SIZE
+        out = [get_pre_name( \
+                model_eval( \
+                dis_loader_func(ans[i]).view(1, -1))) for i in range (ROW*COL)]
+        out_row_col = [out[i*COL:(i+1)*COL] for i in range (ROW)]
+        res_row_col = [res[i*COL:(i+1)*COL] for i in range (ROW)]
+        return out_row_col,res_row_col
+    return func
     
-    
-n_hiddle_1=1600
-n_hiddle_2=800
-n_hiddle_3=200
 
-epoch = 20
+easy_get_all_pixel_discri = get_all_pixel_discri_kernel("easy")
+difficult_get_all_pixel_discri = get_all_pixel_discri_kernel("difficult")
+
+in_dim = 3 * INIT_SIZE * INIT_SIZE
+n_hiddle_1=800
+n_hiddle_2=200
+n_hiddle_3=50
+
+epoch = 80
 learning_rate = 1e-3
-batch_size = 4
+batch_size = 16
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)
