@@ -28,8 +28,9 @@ python cut.py
 + ~~准确预测每一个数字~~
 + ~~创建简单分割和困难分割~~
 + ~~写cut-discrame-workflow~~
++ ~~改造easy，difficult，normal function~~
++ 开始写入数独内容
 + 优化log_file
-+ 改造easy，difficult，normal function
 + 写dataset教程
 + 改为并行discri
 + 写test_dataset文件
