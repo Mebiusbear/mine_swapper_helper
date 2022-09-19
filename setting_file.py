@@ -4,6 +4,7 @@ from torchvision import transforms
 import torch
 import logging
 
+BOX_SIZE = 30
 INIT_SIZE = 24
 EASY_POINTS = (9,9)
 DIFFICULT_POINTS = (16,30)
@@ -34,7 +35,6 @@ def label_index(index,len_label_name):
     return index
 
 
-
 # 数据准备部分
 label_name_dict = {
     "num_1" : "1",
@@ -50,17 +50,16 @@ len_label_name = len(label_name)
 label_dict = {
     label_name[i] : label_index(i,len_label_name) for i in range (len_label_name)
 }
-train_loader = transforms.Compose([transforms.RandomCrop(INIT_SIZE),transforms.Resize(INIT_SIZE),
-                                transforms.ToTensor()])
-dis_loader = transforms.Compose([transforms.CenterCrop(INIT_SIZE),
-                                transforms.ToTensor()])
-def train_loader_func(img):
-    img = img.convert("RGB")
-    return train_loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
+def loader_func(mode,img):
+    if mode == "train":
+        trans_crop = transforms.RandomCrop(INIT_SIZE)
+    elif mode == "discri":
+        trans_crop = transforms.CenterCrop(INIT_SIZE)
+    else:
+        raise "no mode"
+    loader = transforms.Compose([trans_crop,transforms.Resize(INIT_SIZE),transforms.ToTensor()])
+    return loader(img.convert("RGB")).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
 
-def dis_loader_func(img):
-    img = img.convert("RGB")
-    return dis_loader(img).unsqueeze(0).reshape(3,INIT_SIZE,INIT_SIZE)
 
 # 模型部分
 class Batch_Net(nn.Module):
@@ -78,33 +77,33 @@ class Batch_Net(nn.Module):
         x = self.layer4(x)
         x = self.sofmax(x)
         return x
+
+
+# 识别部分
 def initial():
     criterion = nn.BCEWithLogitsLoss()
     model = Batch_Net(in_dim,n_hiddle_1,n_hiddle_2,n_hiddle_3,out_dim=len_label_name)
     model.load_state_dict(torch.load(model_name))
     return criterion, model
-
-# 识别部分
 def get_pre_name(pre):
     pre_index = torch.max(pre.data,1)[1][0]
     pre_name = label_name[pre_index]
     return pre_name
 
-def get_all_pixel_discri_kernel(level,filename=None,model_eval=None):
+def get_all_pixel_discri_kernel(level): # 将图片切开的核心程序，可选择为简单一般复杂
     import cut
     if level == "difficult":
         ROW,COL = DIFFICULT_POINTS
-        cut_func = cut.difficult_cut
     elif level == "easy":
         ROW,COL = EASY_POINTS
-        cut_func = cut.easy_cut
+        
     def func(model_eval,filename):
-        res = cut_func(filename)
+        res = cut.cut_func(level,filename)
         ans = cut.topil(res)
 
         out = [get_pre_name( \
                 model_eval( \
-                dis_loader_func(ans[i]).view(1, -1))) for i in range (ROW*COL)]
+                loader_func("discri",ans[i]).view(1, -1))) for i in range (ROW*COL)]
         out_row_col = [out[i*COL:(i+1)*COL] for i in range (ROW)]
         res_row_col = [res[i*COL:(i+1)*COL] for i in range (ROW)]
         return out_row_col,res_row_col
@@ -119,7 +118,7 @@ n_hiddle_1=800
 n_hiddle_2=200
 n_hiddle_3=50
 
-epoch = 80
+epoch = 60
 learning_rate = 1e-3
 batch_size = 16
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)

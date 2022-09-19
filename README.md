@@ -36,3 +36,10 @@ python cut.py
 + 写test_dataset文件
 + 完善test_train,test_discri
 + 换一个CNN
+
+
+# 流程
+
++ 设定参数 epoch 60-80、h1 800、h2 200、h3 50、batch 16、learning rate 1e-3 
++ python train.py 遇到pridict=1停下即可
++ python discriminate.py 查看pic/expand_dataset/test_class 分类是否正确

@@ -10,7 +10,7 @@ import logging
 
 
 # 数据准备部分
-loader = setting_file.train_loader_func
+loader_func = setting_file.loader_func
 label_name = setting_file.label_name
 label_dict = setting_file.label_dict
 len_label_name = setting_file.len_label_name
@@ -43,7 +43,7 @@ class Mydata(Dataset):                  # 根据官方文档，自己创建的�
         # img_name = self.img_path[idx]                           # img_path列表里每个元素就是对应图片文件名
         # img_item_path = os.path.join(self.root_dir,self.label_dir,img_name)	# 获得对应图片路径
         img = Image.open(self.imgs[idx])                                 # 使用PIL库下Image工具，打开对应路径图片
-        img = loader(img)
+        img = loader_func("train",img)
         label = self.label_dir                                              # 本数据集label就是文件名，如“ants”（虽然命名为dir看似路径，实则视作字符串会更容易理解）
         label = label_dict[label]
         return img,label     # 返回对应图片和图片的label
@@ -51,7 +51,7 @@ class Mydata(Dataset):                  # 根据官方文档，自己创建的�
     def __len__(self):
         return len(self.imgs)
 
-
+# 选择数据分类的根目录
 root_dir = "./pic/dataset"
 train_dataset = Mydata(root_dir,label_name[0])
 for ln in label_name[1:]:

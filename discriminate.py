@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 数据准备部分
-loader = setting_file.dis_loader_func
+loader_func = setting_file.loader_func
 label_name = setting_file.label_name
 label_name_dict = setting_file.label_name_dict
 len_label_name = setting_file.len_label_name
@@ -31,8 +31,7 @@ difficult_get_all_pixel_discri = setting_file.difficult_get_all_pixel_discri
 easy_get_all_pixel_discri = setting_file.easy_get_all_pixel_discri
 
 
-
-
+# 选择扫雷图片，然后扩充数据库
 def expand_dataset(func,filename):
     model_eval = initial()[1].eval()
     label_row_col,img_row_col = func(model_eval,filename)
@@ -52,5 +51,5 @@ def expand_dataset(func,filename):
 
 
 if __name__ == "__main__":
-    filename = "./pic/expand_dataset/used_pic/Wechat_10.png"
+    filename = "./pic/expand_dataset/used_pic/Wechat_6.png"
     expand_dataset(difficult_get_all_pixel_discri,filename)
