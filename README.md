@@ -36,6 +36,7 @@ python cut.py
 + 写test_dataset文件
 + 完善test_train,test_discri
 + 换一个CNN
++ workflow 化程序
 
 
 # 流程
