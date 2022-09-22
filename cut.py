@@ -20,28 +20,7 @@ def cut_func(level,filename):
     im = plt.imread(filename)
     im = im[b_row:(b_row+ROW*30),b_col:(b_col+COL*30)]
     reshape_im = im.reshape(ROW,SIZE,COL,SIZE,4)
-    res = [reshape_im[i,:,j,:,:] for j in range (COL) for i in range (ROW)]
-    return res
-
-def difficult_cut(filename):
-    im = plt.imread(filename)
-    im = im[143:623,15:915,:]
-    
-    all_1 = im.reshape(DIFFICULT_ROW,SIZE,DIFFICULT_COL,SIZE,4)
-    res = list()
-    for i in range (DIFFICULT_ROW):
-        for j in range (DIFFICULT_COL):
-            res.append(all_1[i,:,j,:,:])
-    return res
-
-def easy_cut(filename):
-    im = plt.imread(filename)
-    im = im[145:415,15:285,:]
-    all_1 = im.reshape(EASY_ROW,SIZE,EASY_COL,SIZE,4)
-    res = list()
-    for i in range (EASY_ROW):
-        for j in range (EASY_COL):
-            res.append(all_1[i,:,j,:,:])
+    res = np.array([reshape_im[i,:,j,:,:] for j in range (COL) for i in range (ROW)])
     return res
 
 

@@ -1,12 +1,8 @@
-import torch.nn as nn
-from PIL import Image
-import torch
 import os
 import shutil
 import setting_file
-import cut
 import matplotlib.pyplot as plt
-import numpy as np
+import time
 
 # 数据准备部分
 loader_func = setting_file.loader_func
@@ -27,13 +23,12 @@ model_name = setting_file.model_name
 EASY_ROW, EASY_COL = setting_file.EASY_POINTS
 DIFFICULT_ROW, DIFFICULT_COL = setting_file.DIFFICULT_POINTS
 get_pre_name = setting_file.get_pre_name
-difficult_get_all_pixel_discri = setting_file.difficult_get_all_pixel_discri
-easy_get_all_pixel_discri = setting_file.easy_get_all_pixel_discri
-
+get_all_pixel_discri_kernel = setting_file.get_all_pixel_discri_kernel
 
 # 选择扫雷图片，然后扩充数据库
-def expand_dataset(func,filename):
+def expand_dataset(level,filename):
     model_eval = initial()[1].eval()
+    func = get_all_pixel_discri_kernel(level)
     label_row_col,img_row_col = func(model_eval,filename)
 
     testclass_dir = "pic/expand_dataset/test_class"
@@ -49,7 +44,22 @@ def expand_dataset(func,filename):
             nfn = os.path.join(out_dir,"%d%d.png"%(i,j))
             plt.imsave(nfn,img_row_col[i][j])
 
+def get_matrix(level,filename):
+    import numpy as np
+    matrix = np.zeros((30,16))
+    model_eval = initial()[1].eval()
+    func = get_all_pixel_discri_kernel(level)
+    label_row_col,_ = func(model_eval,filename)
+    
+    for i,row in enumerate(label_row_col):
+        row_label = np.array(list(map(lambda x:label_name_dict[x],row)))
+        matrix[i,:] = row_label
+    return matrix.T
+
 
 if __name__ == "__main__":
-    filename = "./pic/expand_dataset/used_pic/Wechat_6.png"
-    expand_dataset(difficult_get_all_pixel_discri,filename)
+    filename = "./pic/expand_dataset/used_pic/Wechat_13.png"
+    start = time.time()
+    expand_dataset("difficult",filename)
+    
+    print ("Use time : ", time.time()-start)

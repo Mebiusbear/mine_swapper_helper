@@ -30,14 +30,18 @@ python cut.py
 + ~~写cut-discrame-workflow~~
 + ~~改造easy，difficult，normal function~~
 + 开始写入数独内容
++ 加入分割算法
 + 优化log_file
++ cut_func返回矩阵状态的数组
++ 解决func : get_all_pixel_discri_kernel图像需要倒置问题
 + 写dataset教程
 + 改为并行discri
 + 写test_dataset文件
 + 完善test_train,test_discri
 + 换一个CNN
 + workflow 化程序
-
++ 对齐初始点
++ 对象化，初始设定难度
 
 # 流程
 

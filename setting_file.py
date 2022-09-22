@@ -37,13 +37,13 @@ def label_index(index,len_label_name):
 
 # 数据准备部分
 label_name_dict = {
-    "num_1" : "1",
-    "num_2" : "2",
-    "num_3" : "3",
-    "num_4" : "4",
-    "num_5" : "5",
-    "kong"  : "k",
-    "qizi"  : "q",
+    "num_1" :  1,
+    "num_2" :  2,
+    "num_3" :  3,
+    "num_4" :  4,
+    "num_5" :  5,
+    "kong"  :  0,
+    "qizi"  : -1,
 }
 label_name = list(label_name_dict.keys()) 
 len_label_name = len(label_name)
@@ -89,7 +89,6 @@ def get_pre_name(pre):
     pre_index = torch.max(pre.data,1)[1][0]
     pre_name = label_name[pre_index]
     return pre_name
-
 def get_all_pixel_discri_kernel(level): # 将图片切开的核心程序，可选择为简单一般复杂
     import cut
     if level == "difficult":
@@ -104,15 +103,14 @@ def get_all_pixel_discri_kernel(level): # 将图片切开的核心程序，可�
         out = [get_pre_name( \
                 model_eval( \
                 loader_func("discri",ans[i]).view(1, -1))) for i in range (ROW*COL)]
-        out_row_col = [out[i*COL:(i+1)*COL] for i in range (ROW)]
-        res_row_col = [res[i*COL:(i+1)*COL] for i in range (ROW)]
+        out_row_col = [out[i*ROW:(i+1)*ROW] for i in range (COL)]
+        res_row_col = [res[i*ROW:(i+1)*ROW] for i in range (COL)]
         return out_row_col,res_row_col
     return func
-    
 
-easy_get_all_pixel_discri = get_all_pixel_discri_kernel("easy")
-difficult_get_all_pixel_discri = get_all_pixel_discri_kernel("difficult")
 
+
+# 训练参数
 in_dim = 3 * INIT_SIZE * INIT_SIZE
 n_hiddle_1=800
 n_hiddle_2=200
