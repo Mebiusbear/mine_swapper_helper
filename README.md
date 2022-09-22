@@ -1,5 +1,6 @@
 ## zero part
 ```
+pip install -r requierment.txt
 unzip pic.zip
 mkdir log_file
 mkdir model_param
@@ -29,8 +30,14 @@ python cut.py
 + ~~创建简单分割和困难分割~~
 + ~~写cut-discrame-workflow~~
 + ~~改造easy，difficult，normal function~~
-+ 开始写入数独内容
++ ~~开始写入数独内容~~
++ ~~自动点击安全点~~
++ 改写dfs
 + 加入分割算法
++ 自动获得启动点
++ 优化扫雷程序
++ 生成扫雷gif
++ 如果没有，点击最小概率点
 + 优化log_file
 + cut_func返回矩阵状态的数组
 + 解决func : get_all_pixel_discri_kernel图像需要倒置问题

@@ -88,44 +88,52 @@ def get_borden(matrix):
     pass
 
 def main():
+    from click_safe import box_click
+    from get_screen import get_screen
     start = time.time()
     # file_init = "./pic/expand_dataset/used_pic/initial_png.png"
     # matrix_init = get_matrix("difficult",file_init)
 
-    filename = "/Users/bear/Documents/GitHub/saolei/mine_swapper/temp/WX20220922-165434.png"
-    matrix = get_matrix("difficult",filename)
 
+    for k in range (10):
+        filename = "./mine_swapper/temp/%d.png"%k
+        get_screen("./mine_swapper/temp/%d.png"%k)
+        matrix = get_matrix("difficult",filename)
+        row,col = matrix.shape
+        mines, safeties = set(), set()
+        probability = dict()
 
-    row,col = matrix.shape
-    mines, safeties = set(), set()
-    probability = dict()
+        for i in range (row):
+            for j in range (col):
+                candidates = uncertain_grids(matrix, i, j)
+                results = []
+                search(matrix, candidates, 0, results)
+                stat = reduce(lambda a, b: [x+y for x, y in zip(a,b)], results, [0]*len(candidates))
+                # if candidates:
+                #     print ((i,j),": \n",candidates,"\n",results,"\n",stat)
+                for candidate, num in zip(candidates, stat):
+                    if num == 0:
+                        safeties.add(candidate)
+                    elif num == len(results):
+                        mines.add(candidate)
+                    elif candidate not in safeties and candidate not in mines:
+                        p = num *1.0 / len(results)
+                        if candidate in probability:
+                            probability[candidate] = max(probability[candidate], p)
+                        else:
+                            probability[candidate] = p
+        # print (matrix)
+        # print (mines)
+        for row,col in safeties:
+            box_click(row,col)
 
-    for i in range (row):
-        for j in range (col):
-            candidates = uncertain_grids(matrix, i, j)
-            results = []
-            search(matrix, candidates, 0, results)
-            stat = reduce(lambda a, b: [x+y for x, y in zip(a,b)], results, [0]*len(candidates))
-            # if candidates:
-            #     print ((i,j),": \n",candidates,"\n",results,"\n",stat)
-            for candidate, num in zip(candidates, stat):
-                if num == 0:
-                    safeties.add(candidate)
-                elif num == len(results):
-                    mines.add(candidate)
-                elif candidate not in safeties and candidate not in mines:
-                    p = num *1.0 / len(results)
-                    if candidate in probability:
-                        probability[candidate] = max(probability[candidate], p)
-                    else:
-                        probability[candidate] = p
-
-    print (mines)
-    print (safeties)
+    # print (safeties)
+    print (probability)
 
 
     # print (np.where(matrix != matrix_init))
     print ("Use time : ", time.time()-start)
 
 if __name__ == "__main__":
+    filename = "/Users/bear/Documents/GitHub/saolei/mine_swapper/temp/WX20220922-184015.png"
     main()

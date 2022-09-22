@@ -5,7 +5,7 @@ import torch
 import logging
 
 BOX_SIZE = 30
-INIT_SIZE = 24
+INIT_SIZE = 28
 EASY_POINTS = (9,9)
 DIFFICULT_POINTS = (16,30)
 
@@ -44,6 +44,7 @@ label_name_dict = {
     "num_5" :  5,
     "kong"  :  0,
     "qizi"  : -1,
+    "safe"  : -2,
 }
 label_name = list(label_name_dict.keys()) 
 len_label_name = len(label_name)
@@ -112,11 +113,11 @@ def get_all_pixel_discri_kernel(level): # 将图片切开的核心程序，可�
 
 # 训练参数
 in_dim = 3 * INIT_SIZE * INIT_SIZE
-n_hiddle_1=800
+n_hiddle_1=in_dim
 n_hiddle_2=200
-n_hiddle_3=50
+n_hiddle_3=100
 
 epoch = 60
 learning_rate = 1e-3
-batch_size = 16
+batch_size = 15
 model_name = "model_param/h1_%d_h2_%d_h3_%d_e_%d.pkl"%(n_hiddle_1,n_hiddle_2,n_hiddle_3,epoch)

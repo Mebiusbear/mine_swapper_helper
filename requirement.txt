@@ -4,3 +4,8 @@ pillow
 numpy
 matplotlib
 unzip
+pyscreenshot
+
+pyobjc-framework-Quartz
+pyobjc-core
+pyobjc

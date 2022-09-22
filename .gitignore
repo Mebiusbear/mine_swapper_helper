@@ -3,6 +3,7 @@ __MACOSX
 pic/
 temp/
 log_file/
+model_param/h1_16*
 .DS_Store
 __pycache__
 example.ipynb

@@ -58,7 +58,8 @@ def get_matrix(level,filename):
 
 
 if __name__ == "__main__":
-    filename = "./pic/expand_dataset/used_pic/Wechat_13.png"
+    filename = "./mine_swapper/temp/WX20220922-165434.png"
+    # filename = "./pic/expand_dataset/used_pic/Wechat_9.png"
     start = time.time()
     expand_dataset("difficult",filename)
     
