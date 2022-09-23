@@ -27,18 +27,30 @@ python main.py
 + 提供三个训练好的模型
 
 # TODO
-Version 1.0.0 :white_check_mark:
+Version 0.1.0 :white_check_mark:
+---
++ ~~准确预测每一个数字~~
++ ~~写cut-discrame-workflow~~
+
+Version 0.1.1 :white_check_mark:
 ---
 + ~~多通道线性层 (finish)~~
 + ~~1与4的区分测试~~
-+ ~~loss作图,matplotlib~~
-+ ~~准确预测每一个数字~~
-+ ~~创建简单分割和困难分割~~
-+ ~~写cut-discrame-workflow~~
 + ~~改造easy，difficult，normal function~~
+
+Version 0.1.2 :white_check_mark:
+---
++ ~~loss作图,matplotlib~~
++ ~~创建简单分割和困难分割~~
++ ~~cut_func返回矩阵状态的数组~~
+
+Version 0.2.0 :white_check_mark:
+---
 + ~~开始写入数独内容~~
 + ~~自动点击安全点~~
-+ ~~cut_func返回矩阵状态的数组~~
+
+Version 1.0.0 :white_check_mark:
+---
 + ~~改为并行discri~~
 + ~~优化扫雷程序（文件夹排序)~~
 
@@ -64,6 +76,7 @@ Version 1.2.0
 
 Version 1.3.0
 ---
++ 写一个关于Version 1的简介
 + workflow 化程序
 + 添加设置args
 + src加一个app文件夹
@@ -71,6 +84,7 @@ Version 1.3.0
 
 Version 2.0.0
 ---
++ 写各种心得
 + 改写dfs
 + 加入分割算法
 + 换一个CNN
