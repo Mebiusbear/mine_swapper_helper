@@ -1,28 +1,34 @@
-## zero part
+# How to Use
+## 0.配置环境
 ```
 pip install -r requierment.txt
+```
+
+## 1.制作数据集
+```
 unzip pic.zip
 mkdir log_file
-mkdir model_param
 ```
 
-## first part
-+ 制作数据集
-```python
-python cut.py
+## 2.完善数据集
++ trainset 扩充 100 each filedir
+
+## 3.使用
++ 训练
 ```
-+ 标准化cut
-
-## second part
-+ trainset 扩充 100 echo filedir
-
-## third part
+None
+```
 + 数独
-+ 创建简单数独数学模型
-+ 破解数独
-+ pyqt制作游戏
+```
+python main.py
+```
+
+# Node
++ 提供三个训练好的模型
 
 # TODO
+Version 1.0.0 :white_check_mark:
+---
 + ~~多通道线性层 (finish)~~
 + ~~1与4的区分测试~~
 + ~~loss作图,matplotlib~~
@@ -32,26 +38,60 @@ python cut.py
 + ~~改造easy，difficult，normal function~~
 + ~~开始写入数独内容~~
 + ~~自动点击安全点~~
-+ 改写dfs
-+ 加入分割算法
-+ 自动获得启动点
-+ 优化扫雷程序
-+ 生成扫雷gif
-+ 如果没有，点击最小概率点
-+ 优化log_file
-+ cut_func返回矩阵状态的数组
++ ~~cut_func返回矩阵状态的数组~~
++ ~~改为并行discri~~
++ ~~优化扫雷程序（文件夹排序)~~
+
+
+Version 1.1.0
+---
++ 自动点击第一个点
++ 自动获得扫雷锚定点
++ 如果没有找到安全点，点击最小概率点
++ 不再需要temp文件夹
 + 解决func : get_all_pixel_discri_kernel图像需要倒置问题
++ 生成扫雷gif
+
+
+Version 1.2.0
+---
++ setting_file 直接判断三个难度
 + 写dataset教程
-+ 改为并行discri
++ 写torch训练教程
 + 写test_dataset文件
 + 完善test_train,test_discri
-+ 换一个CNN
++ 优化log_file
+
+Version 1.3.0
+---
 + workflow 化程序
-+ 对齐初始点
++ 添加设置args
++ src加一个app文件夹
+
+
+Version 2.0.0
+---
++ 改写dfs
++ 加入分割算法
++ 换一个CNN
++ 插旗
++ 写一个初始化项目脚本
 + 对象化，初始设定难度
+
+Version 2.1.0
+---
++ 泛化各种扫雷
++ 适配windows
+
+Version 3.0.0
+---
++ 制作游戏
++ 尝试不用深度学习
+
 
 # 流程
 
-+ 设定参数 epoch 60-80、h1 800、h2 200、h3 50、batch 16、learning rate 1e-3 
+## 新数据集训练过程
++ 设定参数 epoch 60-80、h1 2352、h2 200、h3 100、batch 16、learning rate 1e-3 
 + python train.py 遇到pridict=1停下即可
 + python discriminate.py 查看pic/expand_dataset/test_class 分类是否正确

@@ -3,7 +3,11 @@ __MACOSX
 pic/
 temp/
 log_file/
-model_param/h1_16*
+model_param/*
+!model_param/h1_2352_h2_200_h3_100_e_60.pkl
+!model_param/h1_2352_h2_588_h3_84_e_30.pkl
+!model_param/h1_1176_h2_294_h3_42_e_60.pkl
 .DS_Store
 __pycache__
-example.ipynb
+
+
