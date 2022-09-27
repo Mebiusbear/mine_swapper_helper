@@ -11,7 +11,7 @@ EASY_POINTS = (9,9)
 DIFFICULT_POINTS = (16,30)
 DATASET_ROOT_DIR = "./pic/dataset"
 
-BASE_POINT = (307.91595458984375, 408.39251708984375)
+BASE_POINT = (293.0256042480469, 430.9764404296875)
 
 
 # 日志部分
@@ -45,6 +45,8 @@ label_name_dict = {
     "num_3" :  3,
     "num_4" :  4,
     "num_5" :  5,
+    "num_6" :  6,
+    "num_7" :  7,
     "kong"  :  0,
     "qizi"  : -1,
     "safe"  : -2,
@@ -67,9 +69,9 @@ def loader_func(mode,img):
 
 # 训练参数
 in_dim = 3 * INIT_SIZE * INIT_SIZE
-n_hiddle_1 = int (in_dim / 2)
-n_hiddle_2 = int (in_dim / 8)
-n_hiddle_3 = int (in_dim / 8 / 7)
+n_hiddle_1 = int (in_dim)
+n_hiddle_2 = int (in_dim / 4)
+n_hiddle_3 = int (in_dim / 4 / 7)
 
 epoch = 60
 learning_rate = 1e-3

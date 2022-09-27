@@ -60,6 +60,7 @@ Version 1.1.0
 + 自动点击第一个点
 + 自动获得扫雷锚定点
 + 如果没有找到安全点，点击最小概率点
++ 加上数字6，7
 + 不再需要temp文件夹
 + 解决func : get_all_pixel_discri_kernel图像需要倒置问题
 + 生成扫雷gif
